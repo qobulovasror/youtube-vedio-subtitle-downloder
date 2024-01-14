@@ -1,5 +1,6 @@
-import os, shutil
+import os
 import requests
+from dotenv import load_dotenv
 from telegram import Update
 from telegram.ext import (
     ApplicationBuilder,
@@ -10,38 +11,16 @@ from telegram.ext import (
 )
 from pytube import YouTube  
 from youtube_transcript_api import YouTubeTranscriptApi
-import datetime
 from youtube_transcript_api.formatters import SRTFormatter
+load_dotenv()
 
-TOKEN = "6735379245:AAGk2pwDueuSJ-8T6Q6b0r9V5MFwbibt1LM"
+TOKEN = os.getenv("TOKEN")
 SAVE_PATH = "vedio"
-
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.message.reply_text(
         "Hello! Send me a YouTube video link and I will download it with subtitles."
     )
-
-def convert_to_subtitle(data):
-    start_time = datetime.datetime(1900, 1, 1, 0, 0, 0, 0)
-    subtitles = []
-
-    for i, entry in enumerate(data, start=1):
-        start_seconds = entry['start']
-        duration_seconds = entry['duration']
-
-        start_time += datetime.timedelta(seconds=start_seconds)
-        end_time = start_time + datetime.timedelta(seconds=duration_seconds)
-
-        subtitle_entry = (
-            f"{i}\n"
-            f"{start_time.strftime('%H:%M:%S,%f')[:-3]} --> {end_time.strftime('%H:%M:%S,%f')[:-3]}\n"
-            f"{entry['text']}\n"
-        )
-
-        subtitles.append(subtitle_entry)
-
-    return subtitles
 
 
 def delete_files(file):
@@ -54,16 +33,6 @@ def delete_files(file):
         print(f"Sizda {file} You don't have permission to delete")
     except Exception as e:
         print(f"An error occurred while deleting the file: {e}")
-    return
-    for filename in os.listdir(SAVE_PATH):
-        file_path = os.path.join(SAVE_PATH, filename)
-        try:
-            if os.path.isfile(file_path) or os.path.islink(file_path):
-                os.unlink(file_path)
-            elif os.path.isdir(file_path):
-                shutil.rmtree(file_path)
-        except Exception as e:
-            print('Failed to delete %s. Reason: %s' % (file_path, e))
 
 
 async def download_video(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -99,8 +68,8 @@ async def download_video(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
         print("Error: ", ex)
     finally:
         pass
-        # delete_files(video_file, )
-        # delete_files(video_file+".srt")
+        delete_files(video_file, )
+        delete_files(video_file+".srt")
 
 
 def main() -> None:
