@@ -38,17 +38,17 @@ This telegram bot download subtitles and vedio from YouTube videos.
 
 
 ## Project Structure
-youtube-vedio-subtitle-downloder/
-│
-├── venv/                    # Virtual environment files
-│
-├── app.py                   # main app
-│
-├── .gitignore               # Git ignore files list
-│
-├── requirements.txt         # installition libs
-│
-└── README.md                # about this project
+youtube-vedio-subtitle-downloder/\
+│\
+├── venv/                    # Virtual environment files\
+│\
+├── app.py                   # main app\
+│\
+├── .gitignore               # Git ignore files list\
+│\
+├── requirements.txt         # installition libs\
+│\
+└── README.md                # about this project\
 
 
 ## Dependencies
